@@ -31,24 +31,26 @@ function App() {
 
   const connectWallet = async () => {
     try {
-      // Try to connect to real Freighter
+      setLoading(true);
       if (await isConnected()) {
         const pubKey = await getPublicKey();
         if (pubKey) {
           setWallet(pubKey);
+          setLoading(false);
           return;
         }
       }
-      
-      // If not installed or locked, use Demo account
-      console.log("Using Demo Wallet");
-      setWallet("G...DEMO_ACCOUNT");
-      alert("Demo Mode: Connected with testing account.");
+      activateDemo();
     } catch (e) {
-      console.error("Wallet error:", e);
-      setWallet("G...DEMO_ACCOUNT");
-      alert("Demo Mode: Connected with testing account.");
+      console.error(e);
+      activateDemo();
     }
+  };
+
+  const activateDemo = () => {
+    setWallet("G...DEMO_ACCOUNT");
+    setLoading(false);
+    alert("Connected via Demo Mode for recording/testing!");
   };
 
   const castVote = async (name) => {
