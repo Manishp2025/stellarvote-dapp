@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import * as freighter from "@stellar/freighter-api";
 import * as StellarSdk from "@stellar/stellar-sdk";
 
 const CONTRACT_ID = "C... (Deploy and replace)"; // Placeholder
@@ -20,8 +19,9 @@ function App() {
 
   const checkWallet = async () => {
     try {
-      if (typeof freighter !== 'undefined' && freighter.isConnected && await freighter.isConnected()) {
-        const pubKey = await freighter.getPublicKey();
+      const fApi = window.freighterApi;
+      if (fApi && await fApi.isConnected()) {
+        const pubKey = await fApi.getPublicKey();
         if (pubKey) setWallet(pubKey);
       }
     } catch (e) {
@@ -32,8 +32,9 @@ function App() {
   const connectWallet = async () => {
     try {
       setLoading(true);
-      if (typeof freighter !== 'undefined' && freighter.isConnected && await freighter.isConnected()) {
-        const pubKey = await freighter.getPublicKey();
+      const fApi = window.freighterApi;
+      if (fApi && await fApi.isConnected()) {
+        const pubKey = await fApi.getPublicKey();
         if (pubKey) {
           setWallet(pubKey);
           setLoading(false);
