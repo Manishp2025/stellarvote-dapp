@@ -202,3 +202,24 @@ input:focus {
   background: rgba(0, 242, 255, 0.1);
   color: var(--accent);
 }
+
+.status-toast {
+  padding: 1rem;
+  border-radius: 0.8rem;
+  background: rgba(155, 77, 255, 0.1);
+  border: 1px solid var(--primary);
+  color: var(--text-main);
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.status-toast.error {
+  background: rgba(255, 77, 77, 0.1);
+  border-color: #ff4d4d;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -31,7 +31,10 @@ impl VotingContract {
         let mut candidates: Vec<Symbol> = env.storage().instance().get(&DataKey::Candidates).unwrap();
         candidates.push_back(name.clone());
         env.storage().instance().set(&DataKey::Candidates, &candidates);
-        env.storage().instance().set(&DataKey::Candidate(name), &0u32);
+        env.storage().instance().set(&DataKey::Candidate(name.clone()), &0u32);
+
+        // Publish Event
+        env.events().publish((symbol_short!("vote"), symbol_short!("add_cand")), name);
     }
 
     pub fn vote(env: Env, voter: Address, candidate: Symbol) {
@@ -44,10 +47,13 @@ impl VotingContract {
 
         // Check if candidate exists and increment vote
         let votes: u32 = env.storage().instance().get(&DataKey::Candidate(candidate.clone())).expect("Candidate not found");
-        env.storage().instance().set(&DataKey::Candidate(candidate), &(votes + 1));
+        env.storage().instance().set(&DataKey::Candidate(candidate.clone()), &(votes + 1));
 
         // Mark as voted
-        env.storage().instance().set(&DataKey::Voted(voter), &true);
+        env.storage().instance().set(&DataKey::Voted(voter.clone()), &true);
+
+        // Publish Event
+        env.events().publish((symbol_short!("vote"), symbol_short!("cast")), (voter, candidate));
     }
 
     pub fn get_votes(env: Env, candidate: Symbol) -> u32 {

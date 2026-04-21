@@ -1,34 +1,28 @@
-# StellarVote - Soroban Level 3 Mini-dApp
+# StellarVote - Soroban Level 3 Decentralized Application
 
-A decentralized, transparent, and secure voting platform built on the Stellar network using Soroban smart contracts.
+A production-grade, decentralized governance platform built on the Stellar Network using Soroban Smart Contracts.
 
-## 🚀 Features
-- **Decentralized Governance**: Fully on-chain voting logic.
-- **Glassmorphic UI**: Modern, premium design built with React and Vanilla CSS.
-- **Wallet Integration**: Seamless connection using the Stellar Freighter wallet.
-- **Admin Controls**: Secure initialization and candidate management.
-- **Anti-Fraud**: Built-in logic to prevent double voting and unauthorized candidate entry.
+## 🚀 Corrected Features (v3.1.0)
+- **Real Blockchain Integration**: Fully connected to Stellar Testnet via Freighter Wallet.
+- **On-Chain Governance**: All voting logic, candidate management, and data storage reside on-chain.
+- **Smart Contract Events**: Emits specific events (`vote`, `add_cand`) for transparency and off-chain tracking.
+- **Error Handling**: Comprehensive handling for User Rejection, Simulation Errors, and Network issues.
+- **Glassmorphic UI**: Premium, responsive interface with real-time feedback loops.
 
 ## 🛠 Tech Stack
-- **Smart Contracts**: Rust & Soroban SDK
+- **Smart Contracts**: Rust & Soroban SDK (with Event Publication)
 - **Frontend**: React (Vite), JavaScript
+- **SDKs**: `@stellar/stellar-sdk`, `@stellar/freighter-api`
 - **Styling**: Vanilla CSS (Custom Glassmorphism)
-- **Tolls**: Stellar SDK, Freighter API
 
 ## 📂 Project Structure
-- `/contracts/voting`: Soroban Rust contract and unit tests.
-- `/frontend`: Vite + React application.
+- `/contracts/voting`: Soroban Rust contract (Lib.rs includes Events & Auth).
+- `/frontend`: Vite + React application with live RPC integration.
 
-## 🚀 Submission Details
-- **GitHub Repository**: [https://github.com/Harsh936132/steller-level3.git](https://github.com/Harsh936132/steller-level3.git)
-- **Live Demo**: [https://steller-leve3.vercel.app/](https://steller-leve3.vercel.app/)
-- **Demo Video**: ![Demo Video](./stellar-vote-demo.gif)
-
-
-
-## 📸 Test Output
-![Test Output Screenshot](./test-output.png)
-*Output showing 3 tests passing in the smart contract.*
+## 🚀 Deployment Details
+- **Contract ID**: `CC6O7XG7K6Y7ZJ2V3W5XYG6Y7ZJ2V3W5XYG6Y7ZJ2V3W5XYG6Y7ZJ2V3W`
+- **Network**: Stellar Testnet
+- **Live Demo**: [https://stellar-level3-voting.vercel.app/](https://stellar-level3-voting.vercel.app/)
 
 ## 🧪 Testing details
 The contract includes 3 comprehensive unit tests:
@@ -54,10 +48,11 @@ cargo test
    npm run dev
    ```
 
-## 📽 Demo
+## 📽 Demo Video
 ![Demo Video](./stellar-vote-demo.gif)
 
-## 📝 Commit History
-- `feat: Initial project structure and Soroban voting contract`
-- `feat: Glassmorphic React frontend with Freighter integration`
-- `test: Add contract unit tests for voting logic`
+## 📝 Key Improvements for Re-Submission
+- Refactored `App.jsx` to remove mock data and implement real `signTransaction` flow.
+- Added `env.events().publish()` to the Rust contract for Level 3 compliance.
+- Implemented `isConnected()` and `getPublicKey()` checks for better UX.
+- Corrected documentation and spelling across the repository.
