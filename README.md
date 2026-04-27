@@ -6,6 +6,8 @@ A production-grade, decentralized governance platform built on the Stellar Netwo
 - **Real Blockchain Integration**: Fully connected to Stellar Testnet via Freighter Wallet.
 - **On-Chain Governance**: All voting logic, candidate management, and data storage reside on-chain.
 - **Smart Contract Events**: Emits specific events (`vote`, `add_cand`) for transparency and off-chain tracking.
+- **Loading States & Progress**: Comprehensive loading states, disabled buttons during processing, and real-time status indicators.
+- **Local Caching**: Basic caching implementation using LocalStorage for instantaneous UI updates.
 - **Error Handling**: Comprehensive handling for User Rejection, Simulation Errors, and Network issues.
 - **Glassmorphic UI**: Premium, responsive interface with real-time feedback loops.
 
@@ -30,10 +32,17 @@ The contract includes 3 comprehensive unit tests:
 2. `test_double_voting`: Ensures a single address cannot vote more than once.
 3. `test_double_init`: Prevents the contract from being initialized multiple times.
 
-### How to Run Tests locally:
+### How to Run Smart Contract Tests locally:
 ```bash
 cd contracts/voting
 cargo test
+```
+
+### How to Run Frontend Tests locally:
+We have added unit testing for the frontend utilizing Vitest. To run them:
+```bash
+cd frontend
+npm test
 ```
 
 ## 🏃 Run Locally

@@ -4,102 +4,85 @@ import path from 'path';
 
 const URL = 'http://localhost:5173/';
 const DESKTOP = 'C:\\Users\\harsh\\OneDrive\\Desktop';
-const OUTPUT_DIR = path.join(DESKTOP, 'stellar-demo-screenshots');
+const OUTPUT_DIR = path.join(DESKTOP, 'stellar-level3-final');
 
 if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 (async () => {
-  console.log('Launching browser...');
+  console.log('🚀 Launching Professional Demo Recorder...');
   const browser = await puppeteer.launch({ 
     headless: false, 
-    defaultViewport: { width: 1280, height: 720 }
+    defaultViewport: { width: 1280, height: 720 },
+    args: ['--start-maximized']
   });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 720 });
   
-  // Handle ALL dialogs automatically (close them immediately)
-  page.on('dialog', async dialog => {
-    console.log('Dialog dismissed:', dialog.message());
-    await dialog.dismiss();
-  });
+  page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
-  console.log('Navigating to dApp...');
-  await page.goto(URL, { waitUntil: 'networkidle2', timeout: 30000 });
-  await sleep(3000);
-
-  // Check what version is loaded
-  const footerText = await page.$eval('footer', el => el.textContent).catch(() => 'not found');
-  console.log('Footer version:', footerText);
-
-  // Screenshot 1: Landing page
+  // 1. Visit App
+  console.log('Navigating to StellarVote...');
+  await page.goto(URL, { waitUntil: 'networkidle2' });
+  await sleep(5000); // Allow blobs to animate
   await page.screenshot({ path: path.join(OUTPUT_DIR, '01-landing.png') });
-  console.log('Screenshot 1: Landing page');
 
-  // Click Connect Wallet
-  await page.evaluate(() => {
-    const buttons = Array.from(document.querySelectorAll('button'));
-    const connectBtn = buttons.find(b => b.textContent.includes('Connect Wallet') || b.id === 'connect-btn');
-    if (connectBtn) connectBtn.click();
-  });
+  // 2. Demonstrate Glassmorphism (Scroll)
+  console.log('Showing UI responsiveness...');
+  await page.evaluate(() => window.scrollBy({ top: 300, behavior: 'smooth' }));
+  await sleep(3000);
+  await page.evaluate(() => window.scrollBy({ top: -300, behavior: 'smooth' }));
   await sleep(2000);
 
-  // Screenshot 2: After connect click
-  await page.screenshot({ path: path.join(OUTPUT_DIR, '02-after-connect.png') });
-  console.log('Screenshot 2: After connect');
-
-  // Check if wallet connected
-  const walletText = await page.$eval('header button', el => el.textContent).catch(() => 'unknown');
-  console.log('Wallet button text:', walletText);
-
-  // Vote for Alpha 
-  await page.evaluate(() => {
-    const buttons = Array.from(document.querySelectorAll('button'));
-    const voteBtn = buttons.find(b => b.textContent.trim() === 'Vote Now');
-    if (voteBtn) voteBtn.click();
-    else console.log('Vote button not found, trying outline buttons');
-  });
+  // 3. Connect Wallet Interaction
+  console.log('Interacting with Connect Wallet...');
+  await page.hover('#connect-btn');
   await sleep(2000);
+  await page.click('#connect-btn');
+  await sleep(5000); // Simulate waiting for extension
+  await page.screenshot({ path: path.join(OUTPUT_DIR, '02-wallet-attempt.png') });
 
-  // Screenshot 3: After vote
-  await page.screenshot({ path: path.join(OUTPUT_DIR, '03-voted.png') });
-  console.log('Screenshot 3: After vote');
-
-  // Add Champion candidate
-  await page.evaluate(() => {
-    const inputs = document.querySelectorAll('input[type="text"]');
-    if (inputs.length > 0) {
-      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-      nativeInputValueSetter.call(inputs[0], 'Champion');
-      inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
+  // 4. Candidate Interaction
+  console.log('Browsing candidates...');
+  const cards = await page.$$('.candidate-card');
+  if (cards.length > 0) {
+    await cards[0].hover();
+    await sleep(3000);
+    const voteBtn = await cards[0].$('button');
+    if (voteBtn) {
+      await voteBtn.hover();
+      await sleep(2000);
+      await voteBtn.click();
+      console.log('Waiting for transaction simulation...');
+      await sleep(10000); // Wait 10s to show the status toast
     }
-  });
-  await sleep(500);
+  }
+  await page.screenshot({ path: path.join(OUTPUT_DIR, '03-vote-flow.png') });
 
-  await page.evaluate(() => {
-    const btn = document.getElementById('add-candidate-btn');
-    if (btn) btn.click();
-  });
-  await sleep(1500);
-
-  // Screenshot 4: Champion added
-  await page.screenshot({ path: path.join(OUTPUT_DIR, '04-champion-added.png') });
-  console.log('Screenshot 4: Champion added');
-
-  // Vote for Champion
-  await page.evaluate(() => {
-    const buttons = Array.from(document.querySelectorAll('button.btn-outline'));
-    if (buttons.length > 0) buttons[buttons.length - 1].click();
-  });
+  // 5. Admin Panel
+  console.log('Demonstrating Admin Controls...');
+  await page.evaluate(() => document.querySelector('.admin-section').scrollIntoView({ behavior: 'smooth' }));
+  await sleep(3000);
+  
+  await page.type('#candidate-input', 'Soroban Expert', { delay: 100 });
   await sleep(2000);
+  await page.click('#add-candidate-btn');
+  await sleep(8000); // Simulate block time
+  await page.screenshot({ path: path.join(OUTPUT_DIR, '04-admin-flow.png') });
 
-  // Screenshot 5: Final state
-  await page.screenshot({ path: path.join(OUTPUT_DIR, '05-final.png'), fullPage: true });
-  console.log('Screenshot 5: Final state');
+  // 6. Final State
+  console.log('Final review...');
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  await sleep(5000);
+  await page.screenshot({ path: path.join(OUTPUT_DIR, '05-final-state.png') });
 
-  console.log('\n✅ Done! Screenshots saved to:', OUTPUT_DIR);
+  console.log('\n✅ Demo Automation Finished!');
+  console.log('Total Duration: ~60 seconds');
+  console.log('Screenshots saved to:', OUTPUT_DIR);
+  
   await sleep(2000);
   await browser.close();
+  process.exit(0);
 })();
