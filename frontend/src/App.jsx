@@ -24,7 +24,7 @@ function App() {
         if (publicKey) setWallet(publicKey);
       }
     };
-    
+
     // Load from cache initially
     const cachedCandidates = localStorage.getItem("stellarVote_candidates");
     if (cachedCandidates) {
@@ -44,7 +44,7 @@ function App() {
       setLoading(true);
       // Create contract instance
       const contract = new StellarSdk.Contract(CONTRACT_ID);
-      
+
       // Simulate call to list_candidates
       const tx = new StellarSdk.TransactionBuilder(
         new StellarSdk.Account("GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAAAAA", "0"),
@@ -57,7 +57,7 @@ function App() {
       const result = await server.simulateTransaction(tx);
       if (StellarSdk.rpc.Api.isSimulationSuccess(result)) {
         const candidateNames = StellarSdk.scValToNative(result.result.retval);
-        
+
         // Fetch votes for each candidate
         const candidatesWithVotes = await Promise.all(candidateNames.map(async (name) => {
           const voteTx = new StellarSdk.TransactionBuilder(
@@ -67,12 +67,12 @@ function App() {
             .addOperation(contract.call("get_votes", StellarSdk.nativeToScVal(name, { type: "symbol" })))
             .setTimeout(0)
             .build();
-          
+
           const voteRes = await server.simulateTransaction(voteTx);
           const votes = StellarSdk.scValToNative(voteRes.result.retval);
           return { name, votes: Number(votes) };
         }));
-        
+
         setCandidates(candidatesWithVotes);
         // Cache the results
         localStorage.setItem("stellarVote_candidates", JSON.stringify(candidatesWithVotes));
@@ -185,7 +185,7 @@ function App() {
 
       const signedTx = await signTransaction(tx.toXDR(), { network: "TESTNET" });
       await server.sendTransaction(StellarSdk.TransactionBuilder.fromXDR(signedTx, NETWORK_PASSPHRASE));
-      
+
       setStatus(`✅ ${newCandidate} added to election!`);
       setNewCandidate("");
       fetchCandidates();
