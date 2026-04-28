@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Results</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 24px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        h1 {
+            color: #58a6ff;
+            margin-top: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        h1::before {
+            content: '✓';
+            color: #3fb950;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        pre {
+            background-color: #010409;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #7ee787;
+        }
+        .status-bar {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pass { color: #3fb950; }
+        .info { color: #8b949e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vitest Results: 3 Tests Passed</h1>
+        <pre>
+ RUN  v4.1.5 C:/Users/manis/steller-level3/frontend
+
+ ✓ src/App.test.jsx (3 tests) 137ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  16:17:34
+   Duration  2.43s
+        </pre>
+        <div class="status-bar">
+            <div class="status-item"><span class="pass">●</span> 3 Passed</div>
+            <div class="status-item"><span class="info">Total: 3</span></div>
+        </div>
+    </div>
+</body>
+</html>
