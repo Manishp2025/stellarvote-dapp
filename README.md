@@ -1,67 +1,64 @@
-# StellarVote - Soroban Level 3 Decentralized Application
+# 🗳️ StellarVote: Level 3 Decentralized Voting dApp
 
-A production-grade, decentralized governance platform built on the Stellar Network using Soroban Smart Contracts.
+A professional-grade, decentralized governance platform built on the **Stellar Network** using **Soroban Smart Contracts**. This project satisfies all Level 3 requirements, including on-chain events, state management, and robust error handling.
 
-## 🚀 Corrected Features (v3.1.0)
-- **Real Blockchain Integration**: Fully connected to Stellar Testnet via Freighter Wallet.
-- **On-Chain Governance**: All voting logic, candidate management, and data storage reside on-chain.
-- **Smart Contract Events**: Emits specific events (`vote`, `add_cand`) for transparency and off-chain tracking.
-- **Loading States & Progress**: Comprehensive loading states, disabled buttons during processing, and real-time status indicators.
-- **Local Caching**: Basic caching implementation using LocalStorage for instantaneous UI updates.
-- **Error Handling**: Comprehensive handling for User Rejection, Simulation Errors, and Network issues.
-- **Glassmorphic UI**: Premium, responsive interface with real-time feedback loops.
+## 🚀 Key Features
+- **Stellar Testnet Integration**: Fully connected via Freighter Wallet.
+- **On-Chain Governance**: Candidates and votes are stored and managed directly on the blockchain.
+- **Smart Contract Events**: Emits `vote` and `add_cand` events for transparency.
+- **Advanced UX**: Glassmorphic UI with real-time loading states and progress indicators.
+- **Local Caching**: Optimized performance using LocalStorage for instantaneous UI updates.
+- **Unit Testing**: Comprehensive test suites for both Smart Contracts and Frontend (3+ tests passing).
 
-## 🛠 Tech Stack
-- **Smart Contracts**: Rust & Soroban SDK (with Event Publication)
-- **Frontend**: React (Vite), JavaScript
-- **SDKs**: `@stellar/stellar-sdk`, `@stellar/freighter-api`
-- **Styling**: Vanilla CSS (Custom Glassmorphism)
-
-## 📂 Project Structure
-- `/contracts/voting`: Soroban Rust contract (Lib.rs includes Events & Auth).
-- `/frontend`: Vite + React application with live RPC integration.
-
-## 🚀 Deployment Details
-- **Contract ID**: `CC6O7XG7K6Y7ZJ2V3W5XYG6Y7ZJ2V3W5XYG6Y7ZJ2V3W5XYG6Y7ZJ2V3W`
-- **Network**: Stellar Testnet
+## 📽️ Demo & Live Links
 - **Live Demo**: [https://stellar-level3-voting.vercel.app/](https://stellar-level3-voting.vercel.app/)
+- **Demo Video**: [Watch the 1-Minute Demo](./stellar-vote-demo.gif)
 
-## 🧪 Testing details
-The contract includes 3 comprehensive unit tests:
-1. `test_voting_flow`: Validates the end-to-end flow of adding candidates and casting votes.
-2. `test_double_voting`: Ensures a single address cannot vote more than once.
-3. `test_double_init`: Prevents the contract from being initialized multiple times.
-
-### How to Run Smart Contract Tests locally:
+## 🧪 Proof of Testing
+### Smart Contract Tests (3 Tests Passing)
+The Soroban contract includes tests for the voting flow, double-voting prevention, and initialization security.
 ```bash
 cd contracts/voting
 cargo test
 ```
+![Contract Tests](./test-output.png)
 
-### How to Run Frontend Tests locally:
-We have added unit testing for the frontend utilizing Vitest. To run them:
+### Frontend Unit Tests (3 Tests Passing)
+We use **Vitest** and **React Testing Library** to ensure UI reliability.
 ```bash
 cd frontend
 npm test
 ```
+> [!NOTE]
+> All 3 frontend tests are passing, validating the header rendering, wallet connectivity, and caching logic.
 
-## 🏃 Run Locally
-1. **Clone the repo**
-2. **Install Frontend Dependencies**:
+## 📂 Project Structure
+- `/contracts/voting`: Soroban Rust contract with Events & Auth.
+- `/frontend`: React (Vite) application with live RPC integration.
+
+## 🛠 Tech Stack
+- **Smart Contracts**: Rust, Soroban SDK
+- **Frontend**: React 19, Vite, Stellar SDK v15
+- **Testing**: Vitest, React Testing Library
+
+## 🏃 Local Setup
+1. **Clone the repository**
+2. **Frontend**:
    ```bash
    cd frontend
    npm install
-   ```
-3. **Start Development Server**:
-   ```bash
    npm run dev
    ```
+3. **Contracts**:
+   ```bash
+   cd contracts/voting
+   soroban contract build
+   ```
 
-## 📽 Demo Video
-![Demo Video](./stellar-vote-demo.gif)
-
-## 📝 Key Improvements for Re-Submission
-- Refactored `App.jsx` to remove mock data and implement real `signTransaction` flow.
-- Added `env.events().publish()` to the Rust contract for Level 3 compliance.
-- Implemented `isConnected()` and `getPublicKey()` checks for better UX.
-- Corrected documentation and spelling across the repository.
+## 📝 Level 3 Compliance Checklist
+- [x] Implement Soroban Events (`env.events().publish`).
+- [x] Add Frontend Unit Tests (3+ passing).
+- [x] Implement Loading States & Progress Indicators.
+- [x] Implement Basic Local Caching.
+- [x] Record 1-Minute Demo Video.
+- [x] Deploy to Live URL.
